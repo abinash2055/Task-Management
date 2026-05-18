@@ -1,0 +1,125 @@
+### 1. Go to MongoDB Atlas
+
+    a. Go to Dashboard of that project.
+
+    b. Go to Network Access
+
+    c. Click on Add IP Address
+
+    d. Click on Allow Access From Anywhere or type { --> 0.0.0.0/0 <-- } 
+
+###############################################################################
+
+
+### 2.  In index.jsx,
+
+        change value of origin 
+
+            from { --> http://localhost:5173 <-- }
+
+            to   { --> process.env.FRONTEND_URL || 'http://localhost:5173' <-- }
+
+###############################################################################
+
+
+### 3.  In Package.json,  
+
+        Add these line in scripts
+
+            "dev": "nodemon index.js" 
+        
+        Change this line 
+
+            from { --> "start": "nodemon index.js" <-- }
+
+            to   { --> "start": "node index.js" <-- }
+
+###############################################################################
+
+
+### 4.  Go to .env file of Frontend,
+
+        Change the value    
+
+            from { --> VITE_API_BASE_URL="http://localhost:3000/api" <-- }
+
+            to   { --> VITE_API_BASE_URL="https://your-backend-name.onrender.com/api" <-- }
+
+###############################################################################
+
+
+### 5.  Go to public folder of Frontend,
+
+            Create a file named as ::
+        
+                { --> _redirects <-- }
+
+
+            Add below text
+
+                { --> /*    /index.html   200 <-- }    
+
+###############################################################################
+
+
+### 6. Deploy the Backend to Render,
+
+    Follow the below Steps :::
+
+        1. Create a new Repository in Github and push all the changes.
+
+        2. Go to Render website.
+
+        3. Select "New" and then click on "Web Service".
+
+        4. Go to Setting, find root directory and type: { --> api <-- }
+
+        5. Go to Environment Tab and add a below data.
+
+            a. MONGODB_CONN :  with env file data
+
+            b. FRONTEND_URL : Set to { --> * <-- } for now
+
+                              Set to { --> Netlify_Link <-- } after we get netlify link
+
+        6. Cody URL of Render
+
+###############################################################################
+
+
+### 7. Deploy Frontend to Netlify,
+
+        1. Open Netlify Website
+
+        2. Click "Add New Site"  ---> Import from Github
+
+        3. Go to Site Setting
+
+        4. Select Base directory and change to { --> client <-- }
+
+        5. In frontend folder open terminal and type { --> npm run build <-- }
+
+        6. Go to Site Configuration
+
+        7. Go to Environment Variables and add following data
+
+            a. VITE_API_BASE_URL : Paste your Render URL
+
+        8. Click Deploy 
+
+        9. Then you get URL like { --> [https://my-app.netlify.app] <-- } 
+
+###############################################################################
+
+
+### 8. The Final CORS Security Connection
+
+    Now that both Render and Netlify are live.
+
+        a. Copy Netlify URL
+
+        b. Go back to Render Dashboard for your backend
+
+        c. Change FRONTEND_URL env variable from * to your actual Netlify URL.
+        
+        d. Save it and let Render redeploy it.
